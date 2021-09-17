@@ -1,0 +1,29 @@
+{
+  "name": "travel-parser-js",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "tsc && node --experimental-modules --es-module-specifier-resolution=node dist/app.js",
+    "lint": "eslint src/**/*.ts --fix",
+    "tests": "to be written"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^4.31.0",
+    "@typescript-eslint/parser": "^4.31.0",
+    "eslint": "^7.32.0",
+    "tslint": "^6.1.2",
+    "typescript": "^3.9.3",
+    "@types/node": "^16.9.1"
+  },
+  "dependencies": {
+    "axios": "^0.21.1",
+    "fuzzball": "^1.4.0",
+    "htmlparser2": "^6.1.0"
+  }
+}
