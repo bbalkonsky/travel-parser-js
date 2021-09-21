@@ -6,6 +6,11 @@ import { getRandomInt } from './utils/helpers';
 import Pirates from './parsers/pirates';
 import Trip4you from './parsers/trip4you';
 
+import { Telegraf }  from 'telegraf';
+import dotenv from 'dotenv';
+dotenv.config()
+
+export const bot = new Telegraf(process.env.TELEGRAM_TOKEN);
 
 const fileContent = fs.readFileSync('./src/assets/userAgent.txt', 'utf8').split(/\r?\n/);
 fileContent.pop();
@@ -19,6 +24,7 @@ const vandrouki = new Vandrouki();
 const pirates = new Pirates();
 const trip = new Trip4you();
 
+bot.telegram.sendMessage(process.env.OWNER_ID, 'ПОГНАЛИ').then();
 
 // eslint-disable-next-line no-constant-condition
 while(true) {
@@ -30,8 +36,8 @@ while(true) {
         parser.main().then(posts => {
             posts.forEach(post => {
                 const postCities = getPostCities(post);
-                if (postCities.includes('Санкт-Петербург')) {
-                    console.log(post.url);
+                if (postCities.includes('Москва')) {
+                    bot.telegram.sendMessage(process.env.OWNER_ID, post.url).then();
                 }
             });
         });

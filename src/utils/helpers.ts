@@ -1,6 +1,19 @@
-export function transformCityName(city: string): string {
-    return city.trim()
+export function transformCityName(cities: string[]): string[] {
+    const transformed = [];
+
+    for (const city of cities) {
+        const splitted = city.split(/[-\s]/);
+        if (splitted.length === 1) {
+            transformed.push(`#${city.charAt(0).toUpperCase() + city.slice(1)}`);
+        }
+        else {
+            splitted.forEach((word, idx) => splitted[idx] = word.charAt(0).toUpperCase() + word.slice(1));
+            transformed.push(`#${splitted.join('')}`);
+        }
     }
+
+    return transformed;
+}
 
 export function getRandomInt(max: number, min = 0): number {
     min = Math.ceil(min);
