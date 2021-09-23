@@ -3,4 +3,5 @@ export default interface ParsedPostModel {
     content: string
     url: string;
     image: string;
+    serviceName: string;
 }

@@ -15,6 +15,7 @@ describe('abstract parser', () => {
 });
 
 class Parser extends AbstractParser {
+    protected readonly serviceName = 'Travel';
     protected readonly siteUrl = 'https://travel.site/';
 
     protected readonly mainPagePostMeta: ParseMetaModel = {

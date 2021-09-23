@@ -1,3 +1,6 @@
+import ParsedPostModel from '../models/parsed-post-model';
+import { getPostCities } from '../services/city-finder';
+
 export function transformCityName(cities: string[]): string[] {
     const transformed = [];
 
@@ -29,4 +32,11 @@ export function findBigrams(words: string[]): string[] {
         }
     });
     return result;
+}
+
+export function createPostMessage(post: ParsedPostModel): string {
+    const postCities = getPostCities(post);
+    const hashCities = transformCityName(postCities);
+
+    return `${hashCities.join(' ')}\n\n${post.title}`;
 }

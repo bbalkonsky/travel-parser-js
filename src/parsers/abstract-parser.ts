@@ -4,10 +4,12 @@ import * as parser from 'htmlparser2';
 import * as domutils from 'domutils';
 import ParsedPostModel from '../models/parsed-post-model';
 import ParseMetaModel from '../models/parse-meta-model';
+import UserAgent from '../services/user-agent';
 import { flatBlock, getBlocksByAttr, getFirstBlockByTagAndAttr } from '../utils/parser-helpers';
 
 export default abstract class AbstractParser {
 
+    protected abstract readonly serviceName: string;
     protected abstract readonly siteUrl: string;
     protected options: AxiosRequestConfig = {
         headers: {
@@ -56,8 +58,6 @@ export default abstract class AbstractParser {
                 break;
             } else {
                 newPosts.push(postLink);
-                // TODO delete
-                // break;
             }
         }
         return newPosts;
@@ -117,7 +117,8 @@ export default abstract class AbstractParser {
             title,
             content,
             url: '',
-            image
+            image,
+            serviceName: this.serviceName
         };
     }
 
@@ -135,5 +136,24 @@ export default abstract class AbstractParser {
         return iconBlock?.attribs?.src ?? '';
     }
 
-    public abstract main(): Promise<ParsedPostModel[]>;
+    public async getNewPosts(): Promise<ParsedPostModel[]> {
+        this.options.headers['User-Agent'] = UserAgent.getRandomUserAgent();
+
+        try {
+            const response = await this.sendRequest(this.siteUrl);
+            this.posts = this.getPostsByPage(response.data, this.mainPagePostMeta);
+            if (!this.lastPost && this.posts.length) {
+                this.lastPost = this.findPostLink(this.posts[1]);
+                return new Promise(() => null);
+            } else {
+                const newPosts = this.getNewPostsLinks();
+                if (newPosts[0]) {
+                    this.lastPost = newPosts[1];
+                }
+                return this.getPostsContent(newPosts);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
 }
