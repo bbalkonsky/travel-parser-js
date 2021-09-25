@@ -1,6 +1,9 @@
-name: CI
+name: Main CI
+
 on:
   push:
+    branches:
+      - 'main'
 
 jobs:
   lint:
@@ -11,3 +14,25 @@ jobs:
       run: yarn install
     - name: Run ESLint
       run: yarn run lint
+
+  push-to-ghcr:
+    runs-on: ubuntu-latest
+    needs:
+      - lint
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Login to Github Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GH_PAT }}
+      - name: Build and push to GHCR
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          push: true
+          tags: |
+            ghcr.io/bbalkonsky/travel-parser-js:${{ github.sha }}
+            ghcr.io/bbalkonsky/travel-parser-js:latest
