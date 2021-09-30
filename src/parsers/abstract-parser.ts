@@ -143,12 +143,12 @@ export default abstract class AbstractParser {
             const response = await this.sendRequest(this.siteUrl);
             this.posts = this.getPostsByPage(response.data, this.mainPagePostMeta);
             if (!this.lastPost && this.posts.length) {
-                this.lastPost = this.findPostLink(this.posts[1]);
+                this.lastPost = this.findPostLink(this.posts[0]);
                 return new Promise(() => null);
             } else {
                 const newPosts = this.getNewPostsLinks();
                 if (newPosts[0]) {
-                    this.lastPost = newPosts[1];
+                    this.lastPost = newPosts[0];
                 }
                 return this.getPostsContent(newPosts);
             }
