@@ -1,20 +1,20 @@
-import ParseMetaModel from '../models/parse-meta-model';
+import ParseMetaModel from '../../models/parse-meta-model';
 import AbstractParser from './abstract-parser';
 
-export default class Pirates extends AbstractParser{
+export default class Trip4you extends AbstractParser{
 
-    protected readonly serviceName = 'Pirates travel';
+    protected readonly serviceName = 'Trip4You';
 
-    protected readonly siteUrl = 'https://ru.pirates.travel/';
+    protected readonly siteUrl = 'https://trip4you.ru/toursandavia/';
 
     protected readonly mainPagePostMeta: ParseMetaModel = {
-        tagName: 'article',
-        attrName: 'item-list'
+        tagName: 'div',
+        attrName: 'card-item'
     };
 
     protected readonly postContentParseMeta: ParseMetaModel = {
         tagName: 'div',
-        attrName: 'entry'
+        attrName: 'entry-content'
     };
 
     protected readonly postHeaderParseMeta: ParseMetaModel = {

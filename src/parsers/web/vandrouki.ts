@@ -1,15 +1,15 @@
-import ParseMetaModel from '../models/parse-meta-model';
+import ParseMetaModel from '../../models/parse-meta-model';
 import AbstractParser from './abstract-parser';
 
-export default class Trip4you extends AbstractParser{
+export default class Vandrouki extends AbstractParser{
 
-    protected readonly serviceName = 'Trip4You';
+    protected readonly serviceName = 'Vandrouki';
 
-    protected readonly siteUrl = 'https://trip4you.ru/toursandavia/';
+    protected readonly siteUrl = 'https://vandrouki.ru/';
 
     protected readonly mainPagePostMeta: ParseMetaModel = {
         tagName: 'div',
-        attrName: 'card-item'
+        attrName: 'post'
     };
 
     protected readonly postContentParseMeta: ParseMetaModel = {

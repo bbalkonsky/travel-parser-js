@@ -37,8 +37,15 @@ function replaceCitiesWithManyNames(content: string): string {
         'санкт-петербург',
         ['питер', 'петербург', 'ленинград', 'спб', 'северная столица']
     );
-    content = replaceCity(content, 'екатеринбург', ['свердловск', 'екб', 'ебург']);
-    content = replaceCity(content, 'минеральные воды', ['минводы']);
+    content = replaceCity(
+        content,
+        'екатеринбург',
+        ['свердловск', 'екб', 'ебург']
+    );
+    content = replaceCity(content,
+        'минеральные воды',
+        ['минводы']
+    );
     return content;
 }
 

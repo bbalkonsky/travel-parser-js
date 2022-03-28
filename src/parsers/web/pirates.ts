@@ -1,20 +1,20 @@
-import ParseMetaModel from '../models/parse-meta-model';
+import ParseMetaModel from '../../models/parse-meta-model';
 import AbstractParser from './abstract-parser';
 
-export default class Vandrouki extends AbstractParser{
+export default class Pirates extends AbstractParser{
 
-    protected readonly serviceName = 'Vandrouki';
+    protected readonly serviceName = 'Pirates travel';
 
-    protected readonly siteUrl = 'https://vandrouki.ru/';
+    protected readonly siteUrl = 'https://ru.pirates.travel/';
 
     protected readonly mainPagePostMeta: ParseMetaModel = {
-        tagName: 'div',
-        attrName: 'post'
+        tagName: 'article',
+        attrName: 'item-list'
     };
 
     protected readonly postContentParseMeta: ParseMetaModel = {
         tagName: 'div',
-        attrName: 'entry-content'
+        attrName: 'entry'
     };
 
     protected readonly postHeaderParseMeta: ParseMetaModel = {
@@ -25,7 +25,7 @@ export default class Vandrouki extends AbstractParser{
     protected readonly postIconParseMeta: ParseMetaModel = {
         tagName: 'img',
         attrName: 'wp-post-image'
-    }
+    };
 
     constructor() {
         super();

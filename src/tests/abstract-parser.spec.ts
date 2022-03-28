@@ -1,4 +1,4 @@
-import AbstractParser from '../parsers/abstract-parser'
+import AbstractParser from '../parsers/web/abstract-parser'
 import ParseMetaModel from '../models/parse-meta-model';
 import ParsedPostModel from '../models/parsed-post-model';
 

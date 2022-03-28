@@ -1,12 +1,10 @@
 import * as fs from 'fs';
-import Vandrouki from './parsers/vandrouki';
 import UserAgent from './services/user-agent';
 import { CityFinder } from './services/city-finder';
 import { createPostMessage, getRandomInt } from './utils/helpers';
-import Pirates from './parsers/pirates';
-import Trip4you from './parsers/trip4you';
-import { Telegraf, Markup } from 'telegraf';
+import { Markup, Telegraf } from 'telegraf';
 import dotenv from 'dotenv';
+import { getParsers } from './parsers/initParsers';
 
 dotenv.config()
 
@@ -20,13 +18,11 @@ const citiesList = fs.readFileSync('./src/assets/cities.txt', 'utf8').split(/\r?
 citiesList.pop();
 CityFinder.setCities(citiesList);
 
-const vandrouki = new Vandrouki();
-const pirates = new Pirates();
-const trip = new Trip4you();
+const parsers = getParsers();
 
 // eslint-disable-next-line no-constant-condition
 while(true) {
-    for (const parser of [vandrouki, pirates, trip]) {
+    for (const parser of parsers) {
         parser.getNewPosts().then(posts => {
             posts.forEach(post => {
                 bot.telegram.sendPhoto(

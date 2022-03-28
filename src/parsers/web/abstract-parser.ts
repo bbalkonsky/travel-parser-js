@@ -2,12 +2,13 @@ import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { Element } from 'domhandler';
 import * as parser from 'htmlparser2';
 import * as domutils from 'domutils';
-import ParsedPostModel from '../models/parsed-post-model';
-import ParseMetaModel from '../models/parse-meta-model';
-import UserAgent from '../services/user-agent';
-import { flatBlock, getBlocksByAttr, getFirstBlockByTagAndAttr } from '../utils/parser-helpers';
+import ParsedPostModel from '../../models/parsed-post-model';
+import ParseMetaModel from '../../models/parse-meta-model';
+import UserAgent from '../../services/user-agent';
+import { flatBlock, getBlocksByAttr, getFirstBlockByTagAndAttr } from '../../utils/parser-helpers';
+import ParserModel from '../../models/parser-model';
 
-export default abstract class AbstractParser {
+export default abstract class AbstractParser implements ParserModel{
 
     protected abstract readonly serviceName: string;
     protected abstract readonly siteUrl: string;
