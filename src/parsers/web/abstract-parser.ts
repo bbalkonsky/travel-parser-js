@@ -154,7 +154,8 @@ export default abstract class AbstractParser implements ParserModel{
                 return this.getPostsContent(newPosts);
             }
         } catch (error) {
-            console.log(error);
+            console.log(error.code, error.config.url);
+            return [];
         }
     }
 }
