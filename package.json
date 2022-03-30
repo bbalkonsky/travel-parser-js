@@ -1,12 +1,12 @@
 {
   "name": "travel-parser-js",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "description": "",
   "main": "index.js",
   "type": "module",
   "scripts": {
     "start:dev": "tsc && node --es-module-specifier-resolution=node dist/app.js",
-    "start:prod": "npm i && tsc && npm prune --production && node --es-module-specifier-resolution=node dist/app.js",
+    "start": "npm i && tsc && npm prune --production && node --es-module-specifier-resolution=node dist/app.js",
     "test": "jest --coverage",
     "lint": "eslint src/**/*.ts --fix"
   },
