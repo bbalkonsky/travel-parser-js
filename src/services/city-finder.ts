@@ -72,7 +72,7 @@ export function getPostCities(post: ParsedPostModel): string[] {
     return CityFinder.getCities().reduce((acc, city) => {
         for (const word of uniqueWords) {
             const ratio = fuzzball.ratio(city, word);
-            if (ratio > 85) {
+            if (ratio > 80) {
                 acc.push(city);
                 break;
             }

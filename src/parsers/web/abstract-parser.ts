@@ -86,14 +86,18 @@ export default abstract class AbstractParser implements ParserModel{
     protected async getPostsContent(posts: string[]): Promise<ParsedPostModel[]> {
         const postsContent = [];
         for (const postUrl of posts) {
-            const postContent = await this.sendRequest(postUrl);
-            const parsedContent = this.parsePostContent(
-                postContent.data,
-                this.postContentParseMeta,
-                this.postHeaderParseMeta
-            );
-            parsedContent.url = postUrl;
-            postsContent.push(parsedContent);
+            try {
+                const postContent = await this.sendRequest(postUrl);
+                const parsedContent = this.parsePostContent(
+                    postContent.data,
+                    this.postContentParseMeta,
+                    this.postHeaderParseMeta
+                );
+                parsedContent.url = postUrl;
+                postsContent.push(parsedContent);
+            } catch (e) {
+                console.log(`Error while getting post content (${postUrl}): ${e}`);
+            }
         }
         return postsContent;
     }
@@ -153,8 +157,8 @@ export default abstract class AbstractParser implements ParserModel{
                 }
                 return this.getPostsContent(newPosts);
             }
-        } catch (error) {
-            console.log(error.code, error.config?.url ?? '');
+        } catch (e) {
+            console.log(`Error while getting new posts (${e.config?.url ?? ''}): ${e}`);
             return [];
         }
     }

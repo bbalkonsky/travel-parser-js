@@ -20,8 +20,15 @@ CityFinder.setCities(citiesList);
 
 const parsers = getParsers();
 
-// eslint-disable-next-line no-constant-condition
-while(true) {
+const start = (timeout: number): void => {
+    setTimeout(() => {
+        console.log('new round');
+        parserCallback();
+        start(getRandomInt(120000, 60000));
+    }, timeout);
+}
+
+const parserCallback = () => {
     for (const parser of parsers) {
         parser.getNewPosts().then(posts => {
             posts.forEach(post => {
@@ -39,8 +46,6 @@ while(true) {
             });
         });
     }
-
-    const interval = getRandomInt(120000, 60000)
-    const delay = ms => new Promise(resolve => setTimeout(resolve, ms))
-    await delay(interval)
 }
+
+start(0);
