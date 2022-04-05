@@ -22,7 +22,6 @@ const parsers = getParsers();
 
 const start = (timeout: number): void => {
     setTimeout(() => {
-        console.log('new round');
         parserCallback();
         start(getRandomInt(120000, 60000));
     }, timeout);

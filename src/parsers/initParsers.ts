@@ -5,6 +5,8 @@ import ParserModel from '../models/parser-model';
 
 const vandroukiParser = new Vandrouki();
 const piratesParser = new Pirates();
-const tripParser = new Trip4you();
 
-export const getParsers = (): ParserModel[] => [vandroukiParser, piratesParser, tripParser];
+// TODO turn on after war
+// const tripParser = new Trip4you();
+
+export const getParsers = (): ParserModel[] => [vandroukiParser, piratesParser];
