@@ -1,6 +1,6 @@
 {
   "name": "travel-parser-js",
-  "version": "0.3.7",
+  "version": "0.4.0",
   "description": "",
   "main": "index.js",
   "type": "module",
@@ -27,8 +27,8 @@
   "dependencies": {
     "axios": "^0.21.1",
     "dotenv": "^10.0.0",
-    "fuzzball": "^1.4.0",
     "htmlparser2": "^6.1.0",
+    "string-similarity": "^4.0.4",
     "telegraf": "^4.4.2"
   }
 }
