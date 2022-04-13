@@ -46,6 +46,10 @@ function replaceCitiesWithManyNames(content: string): string {
         'минеральные воды',
         ['минводы']
     );
+    content = replaceCity(content,
+        'ростов-на-дону',
+        ['ростов']
+    );
     return content;
 }
 
