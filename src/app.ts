@@ -41,7 +41,7 @@ const parserCallback = () => {
                                 ]]
                             }
                     }
-                ).catch(() => console.log(`Post error: ${post.url}`));
+                ).catch((e) => console.log(`Post error (${post.url}): ${e}`));
             });
         });
     }
