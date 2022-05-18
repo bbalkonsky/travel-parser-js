@@ -32,7 +32,7 @@ const parserCallback = () => {
         parser.getNewPosts().then(posts => {
             posts.forEach(post => {
                 bot.telegram.sendPhoto(
-                    process.env.OWNER_ID,
+                    process.env.MAIN_CHANNEL,
                     { url: post.image },
                     { caption: createPostMessage(post), reply_markup:
                             {
