@@ -1,12 +1,12 @@
-import fuzzball from 'fuzzball';
 import ParsedPostModel from '../models/parsed-post-model';
 import { findBigrams } from '../utils/helpers';
+import stringSimilarity from 'string-similarity'
 
 export class CityFinder {
     private static cities: string[];
 
     public static setCities(cities: string[]): void {
-        this.cities = cities;
+        this.cities = cities.map(city => city.toLowerCase());
     }
 
     public static getCities(): string[] {
@@ -46,6 +46,10 @@ function replaceCitiesWithManyNames(content: string): string {
         'минеральные воды',
         ['минводы']
     );
+    content = replaceCity(content,
+        'ростов-на-дону',
+        ['ростов']
+    );
     return content;
 }
 
@@ -55,9 +59,13 @@ function replaceCitiesWithManyNames(content: string): string {
  * @param city
  * @param synonyms
  */
-function replaceCity(content: string, city: string, synonyms: string[]): string {
+const replaceCity = (content: string, city: string, synonyms: string[]): string => {
     const regex = new RegExp (synonyms.join('|'), 'gim');
     return content.replace(regex, city);
+}
+
+const checkWordsDistance = (city: string, word: string): boolean => {
+    return stringSimilarity.compareTwoStrings(city, word) >= 0.8;
 }
 
 /**
@@ -70,9 +78,9 @@ export function getPostCities(post: ParsedPostModel): string[] {
     const uniqueWords = [...new Set(bigrammedPost)];
 
     return CityFinder.getCities().reduce((acc, city) => {
-        for (const word of uniqueWords) {
-            const ratio = fuzzball.ratio(city, word);
-            if (ratio > 80) {
+        const largerWords = uniqueWords.filter(word => word.length >= city.length);
+        for (const word of largerWords) {
+            if (checkWordsDistance(city, word)) {
                 acc.push(city);
                 break;
             }

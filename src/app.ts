@@ -26,7 +26,6 @@ CityFinder.setCities(citiesList);
 const parsers = getParsers();
 
 const start = (timeout: number): void => {
-    console.log('TICK!')
     setTimeout(() => {
         parserCallback();
         start(getRandomInt(120000, 60000));
