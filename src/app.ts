@@ -100,3 +100,4 @@ bot.on('web_app_data', async (ctx) => {
 });
 
 bot.launch();
+start(0);
