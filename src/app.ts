@@ -57,12 +57,12 @@ const parserCallback = async () => {
 
 const sendPosts = (post: ParsedPostModel, users: User[]): void => {
     const usersToSendMessage: number[] = [];
-    // const usersToSendMessage: number[] = [parseInt(process.env.OWNER_ID, 10)];
+    // const usersToSendMessage: number[] = [parseInt(process.env.MAIN_CHANNEL, 10)];
     const preparedPost = createPostMessage(post);
 
     for (const user of users) {
         const userCities = user.cities ? JSON.parse(user.cities) : [];
-        if (userCities.filter(x => preparedPost.cities.includes(x)).length) {
+        if (userCities.filter(x => preparedPost.cities.includes(x.toLowerCase())).length) {
             usersToSendMessage.push(user.id);
         }
     }
