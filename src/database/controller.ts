@@ -13,7 +13,7 @@ export default class DataBaseController {
     }
 
     static async getAllUsers(): Promise<User[]> {
-        return getRepository(User).find();
+        return getRepository(User).find() ?? [];
     }
 
     static async getUserCities(chatId): Promise<string[]> {

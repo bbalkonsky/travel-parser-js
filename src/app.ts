@@ -13,6 +13,17 @@ import PreparedPostModel from './models/prepared-post-model';
 
 dotenv.config()
 
+try {
+    await createConnection({
+        type: 'sqlite',
+        database: process.env.DBASE_PATH,
+        entities: [User],
+        synchronize: true
+    });
+} catch (err) {
+    console.log(err);
+}
+
 export const bot = new Telegraf(process.env.TELEGRAM_TOKEN);
 
 const fileContent = fs.readFileSync('./src/assets/userAgent.txt', 'utf8').split(/\r?\n/);
@@ -50,7 +61,8 @@ const sendPosts = (post: ParsedPostModel, users: User[]): void => {
     const preparedPost = createPostMessage(post);
 
     for (const user of users) {
-        if (JSON.parse(user.cities).filter(x => preparedPost.cities.includes(x)).length) {
+        const userCities = user.cities ? JSON.parse(user.cities) : [];
+        if (userCities.filter(x => preparedPost.cities.includes(x)).length) {
             usersToSendMessage.push(user.id);
         }
     }
@@ -75,16 +87,7 @@ const preparePostToChannel = (post: PreparedPostModel): string => {
     return `${hashCities.join(' ')}\n\n${post.title}`;
 };
 
-createConnection({
-    type: 'sqlite',
-    database: process.env.DBASE_PATH,
-    entities: [User],
-    synchronize: true
-})
-    .then()
-    .catch((e) => {
-        console.log(e);
-    });
+
 
 const keyboard = Markup.keyboard([Markup.button.webApp('Выбор городов', process.env.WEB_APP_LINK)]);
 
