@@ -69,11 +69,11 @@ const sendPosts = (post: ParsedPostModel, users: User[]): void => {
     for (const id of usersToSendMessage) {
         bot.telegram.sendPhoto(
             id,
-            { url: post.image },
+            { url: post.image }, // TODO if there is no image
             { caption: preparePostToChannel(preparedPost), reply_markup:
                     {
                         inline_keyboard: [[
-                            Markup.button.url(`${post.serviceName} 🚩`, post.url)
+                            Markup.button.url(`${post.serviceName} 🔥`, post.url)
                         ]]
                     }
             }
@@ -92,7 +92,7 @@ const keyboard = Markup.keyboard([Markup.button.webApp('Выбор городо�
 
 bot.command('start', async (ctx) => {
     await DataBaseController.createChat(ctx.chat.id);
-    ctx.reply('Выбрать города - кнопка. Иначе хрен тебе. =*', keyboard)
+    ctx.reply('Используй кнопку для выбора городов', keyboard)
 })
 bot.on('web_app_data', async (ctx) => {
     const user = ctx.message.from.id;
