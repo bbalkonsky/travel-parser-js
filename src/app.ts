@@ -47,6 +47,7 @@ const parserCallback = async () => {
     const users = await DataBaseController.getAllUsers();
     for (const parser of parsers) {
         parser.getNewPosts().then(posts => {
+            console.log(posts)
             posts.forEach(post => {
                 console.log(post.url)
                 sendPosts(post, users);
@@ -67,9 +68,11 @@ const sendPosts = (post: ParsedPostModel, users: User[]): void => {
     }
 
     for (const id of usersToSendMessage) {
+        // TODO you are kidding right?
+        const img = post.image ? post.image : 'https://static.timesofisrael.com/atlantajewishtimes/uploads/2021/03/141_20201013185512_Consumer-Survey-Finds-70-Percent-of-Travelers-Plan-to-Holiday-in-2021.jpg';
         bot.telegram.sendPhoto(
             id,
-            { url: post.image }, // TODO if there is no image
+            { url: img }, // TODO if there is no image
             { caption: preparePostToChannel(preparedPost), reply_markup:
                     {
                         inline_keyboard: [[
