@@ -39,7 +39,7 @@ const parsers = getParsers();
 const start = (timeout: number): void => {
     setTimeout(() => {
         parserCallback();
-        start(getRandomInt(120000, 60000));
+        start(getRandomInt(240000, 60000));
     }, timeout);
 }
 
@@ -47,7 +47,6 @@ const parserCallback = async () => {
     const users = await DataBaseController.getAllUsers();
     for (const parser of parsers) {
         parser.getNewPosts().then(posts => {
-            console.log(posts)
             posts.forEach(post => {
                 console.log(post.url)
                 sendPosts(post, users);
@@ -57,6 +56,7 @@ const parserCallback = async () => {
 }
 
 const sendPosts = (post: ParsedPostModel, users: User[]): void => {
+    // const usersToSendMessage: number[] = [parseInt(process.env.OWNER_ID, 10)];
     const usersToSendMessage: number[] = [parseInt(process.env.MAIN_CHANNEL, 10)];
     const preparedPost = createPostMessage(post);
 
