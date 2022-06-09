@@ -7,10 +7,18 @@ import Travelradar from './web/travelradar';
 
 const vandroukiParser = new Vandrouki();
 const piratesParser = new Pirates();
-const belkaParser = new Travelbelka();
-const travelRadar = new Travelradar();
 
+// TODO 503
+// const belkaParser = new Travelbelka();
+// TODO 403
+// const travelRadar = new Travelradar();
 // TODO turn on after war
 // const tripParser = new Trip4you();
 
-export const getParsers = (): ParserModel[] => [travelRadar, vandroukiParser, piratesParser, belkaParser];
+export const getParsers = (): ParserModel[] => [
+    vandroukiParser,
+    piratesParser,
+    // tripParser
+    // travelRadar,
+    // belkaParser
+];

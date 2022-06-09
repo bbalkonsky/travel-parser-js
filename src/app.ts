@@ -39,7 +39,7 @@ const parsers = getParsers();
 const start = (timeout: number): void => {
     setTimeout(() => {
         parserCallback();
-        start(getRandomInt(240000, 60000));
+        start(getRandomInt(120000, 60000));
     }, timeout);
 }
 
