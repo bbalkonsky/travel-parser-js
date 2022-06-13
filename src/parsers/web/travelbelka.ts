@@ -7,7 +7,7 @@ export default class Travelbelka extends AbstractParser{
 
     protected readonly serviceName = 'TravelBelka';
 
-    protected readonly siteUrl = 'https://travelbelka.ru/category/aviabilety/';
+    protected readonly siteUrl = 'https://95.217.72.240/category/aviabilety/';
 
     protected readonly mainPagePostMeta: ParseMetaModel = {
         tagName: 'div',
@@ -31,6 +31,8 @@ export default class Travelbelka extends AbstractParser{
 
     constructor() {
         super();
+        this.options.headers.Host = 'travelbelka.ru';
+        this.options.headers.rejectUnauthorized = false;
     }
 
     protected getPostIcon(pageDivs: Element[]): string {
