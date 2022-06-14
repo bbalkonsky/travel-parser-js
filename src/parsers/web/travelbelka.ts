@@ -32,7 +32,7 @@ export default class Travelbelka extends AbstractParser{
     constructor() {
         super();
         this.options.headers.Host = 'travelbelka.ru';
-        this.options.headers.rejectUnauthorized = false;
+        // this.options.headers.rejectUnauthorized = false;
     }
 
     protected getPostIcon(pageDivs: Element[]): string {

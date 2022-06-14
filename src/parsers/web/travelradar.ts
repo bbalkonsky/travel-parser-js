@@ -29,5 +29,6 @@ export default class Travelradar extends AbstractParser{
 
     constructor() {
         super();
+        this.options.headers.Host = 'travelradar.world';
     }
 }
