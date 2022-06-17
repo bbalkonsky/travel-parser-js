@@ -10,14 +10,14 @@ const piratesParser = new Pirates();
 
 const belkaParser = new Travelbelka();
 // TODO 403
-const travelRadar = new Travelradar();
+// const travelRadar = new Travelradar();
 // TODO turn on after war
 // const tripParser = new Trip4you();
 
 export const getParsers = (): ParserModel[] => [
     vandroukiParser,
     piratesParser,
-    travelRadar,
     belkaParser
+    // travelRadar,
     // tripParser
 ];
