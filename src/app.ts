@@ -107,7 +107,15 @@ bot.on('web_app_data', async (ctx) => {
     const cities = ctx.message.web_app_data.data;
     await DataBaseController.updateUserCities(user, cities);
     ctx.reply(`Вы подписаны на следующие города: ${JSON.parse(cities).join(', ')}`);
-});
+})
+bot.command('stat', async (ctx) => {
+    if (ctx.from.id.toString() === process.env.OWNER_ID) {
+        const users = await DataBaseController.getAllUsers();
+        ctx.reply(users.reduce((prev, curr) => `${prev}\n${curr.id}: ${curr.cities}`, `Current: ${users.length}\n`));
+    } else {
+        ctx.reply('Привет ты че шынгыс');
+    }
+})
 
 bot.launch();
 start(0);
