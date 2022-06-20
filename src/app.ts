@@ -55,7 +55,7 @@ const parserCallback = async () => {
     }
 }
 
-const sendPosts = (post: ParsedPostModel, users: User[]): void => {
+const sendPosts = async (post: ParsedPostModel, users: User[]): Promise<void> => {
     // const usersToSendMessage: number[] = [parseInt(process.env.OWNER_ID, 10)];
     const usersToSendMessage: number[] = [parseInt(process.env.MAIN_CHANNEL, 10)];
     const preparedPost = createPostMessage(post);
@@ -67,10 +67,11 @@ const sendPosts = (post: ParsedPostModel, users: User[]): void => {
         }
     }
 
+    const postsToSend = [];
     for (const id of usersToSendMessage) {
         // TODO you are kidding right?
         const img = post.image ? post.image : 'https://static.timesofisrael.com/atlantajewishtimes/uploads/2021/03/141_20201013185512_Consumer-Survey-Finds-70-Percent-of-Travelers-Plan-to-Holiday-in-2021.jpg';
-        bot.telegram.sendPhoto(
+        postsToSend.push(async () => bot.telegram.sendPhoto(
             id,
             { url: img }, // TODO if there is no image
             { caption: preparePostToChannel(preparedPost), reply_markup:
@@ -80,7 +81,11 @@ const sendPosts = (post: ParsedPostModel, users: User[]): void => {
                         ]]
                     }
             }
-        ).catch(() => console.log(`Post error: ${post.url}`));
+        ).catch(() => console.log(`Post error: ${post.url}`)));
+    }
+    for (const chunk of sliceIntoChunks(postsToSend, 25)) {
+        await Promise.allSettled(chunk.map(x => x())).catch(err => console.log(err));
+        await wait(2000)
     }
 }
 
@@ -106,3 +111,28 @@ bot.on('web_app_data', async (ctx) => {
 
 bot.launch();
 start(0);
+
+function wait(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+function sliceIntoChunks(arr, chunkSize) {
+    const res = [];
+    for (let i = 0; i < arr.length; i += chunkSize) {
+        const chunk = arr.slice(i, i + chunkSize);
+        res.push(chunk);
+    }
+    return res;
+}
+// const queries = [];
+//
+// for (let i = 0; i < 100; i++) {
+//     queries.push(
+//         async () => bot.telegram.sendMessage(process.env.OWNER_ID, `привяу ${i}`)
+//     )
+// }
+
+// for (const chunk of sliceIntoChunks(queries, 25)) {
+//     await Promise.allSettled(chunk.map(x => x())).catch(err => console.log(err));
+//     await wait(2000)
+// }
