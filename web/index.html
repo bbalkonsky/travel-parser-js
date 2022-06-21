@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Travel</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"
+              rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor"
+              crossorigin="anonymous">
+    </head>
+    <body>
+        <div class="container" style="padding-top: 10px; padding-bottom: 10px; margin-top: 10px; margin-bottom: 10px;">
+            <div id="header" style="position: sticky; top: 0; z-index: 1; background: white;">
+                <div class="input-group">
+                    <input id="search" type="text" class="form-control" placeholder="Поиск" aria-label="Search" aria-describedby="basic-addon1">
+                    <span class="input-group-text">0</span>
+                </div>
+
+                <div id="filter-buttons" class="btn-group" style="width: 100%" role="group" aria-label="Basic radio toggle button group">
+                    <input type="radio" class="btn-check" data-city="russia" name="btnradio" id="btnradio1" autocomplete="off" checked>
+                    <label class="btn btn-outline-primary" for="btnradio1">Россия</label>
+
+                    <input type="radio" class="btn-check" data-city="world" name="btnradio" id="btnradio2" autocomplete="off">
+                    <label class="btn btn-outline-primary" for="btnradio2">Заграница</label>
+                </div>
+            </div>
+
+            <br/>
+
+            <div class="list-group"></div>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+                integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+                crossorigin="anonymous"></script>
+        <script src="https://telegram.org/js/telegram-web-app.js"></script>
+        <script src="script.js"></script>
+    </body>
+</html>
