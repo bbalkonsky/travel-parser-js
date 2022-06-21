@@ -48,7 +48,6 @@ const parserCallback = async () => {
     for (const parser of parsers) {
         parser.getNewPosts().then(posts => {
             posts.forEach(post => {
-                console.log(post.url)
                 sendPosts(post, users);
             });
         });
@@ -100,7 +99,7 @@ const keyboard = Markup.keyboard([Markup.button.webApp('Выбор городо�
 
 bot.command('start', async (ctx) => {
     await DataBaseController.createChat(ctx.chat.id);
-    ctx.reply('Используй кнопку для выбора городов', keyboard)
+    ctx.reply('Используй кнопку для выбора городов. Если интересны все предложения - подписывайтесь на канал (ссылка в описании)', keyboard);
 })
 bot.on('web_app_data', async (ctx) => {
     const user = ctx.message.from.id;
@@ -111,7 +110,7 @@ bot.on('web_app_data', async (ctx) => {
 bot.command('stat', async (ctx) => {
     if (ctx.from.id.toString() === process.env.OWNER_ID) {
         const users = await DataBaseController.getAllUsers();
-        ctx.reply(users.reduce((prev, curr) => `${prev}\n${curr.id}: ${curr.cities}`, `Current: ${users.length}\n`));
+        ctx.reply(users.reduce((prev, curr) => `${prev}\n${curr.id}: ${curr.cities.length}`, `Itogo: ${users.length}\n`));
     } else {
         ctx.reply('Привет ты че шынгыс');
     }
@@ -132,15 +131,3 @@ function sliceIntoChunks(arr, chunkSize) {
     }
     return res;
 }
-// const queries = [];
-//
-// for (let i = 0; i < 100; i++) {
-//     queries.push(
-//         async () => bot.telegram.sendMessage(process.env.OWNER_ID, `привяу ${i}`)
-//     )
-// }
-
-// for (const chunk of sliceIntoChunks(queries, 25)) {
-//     await Promise.allSettled(chunk.map(x => x())).catch(err => console.log(err));
-//     await wait(2000)
-// }
