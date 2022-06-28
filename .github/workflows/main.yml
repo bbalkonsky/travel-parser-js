@@ -29,14 +29,22 @@ jobs:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GH_PAT }}
-      - name: Build and push to GHCR
+      - name: Build and push travel-web container to GHCR
+        uses: docker/build-push-action@v2
+        with:
+          context: ./web
+          push: true
+          tags: |
+            ghcr.io/bbalkonsky/travel-parser-js:travel-web-${{ github.sha }}
+            ghcr.io/bbalkonsky/travel-parser-js:travel-web-latest
+      - name: Build and push travel-parser-js container to GHCR
         uses: docker/build-push-action@v2
         with:
           context: .
           push: true
           tags: |
-            ghcr.io/bbalkonsky/travel-parser-js:${{ github.sha }}
-            ghcr.io/bbalkonsky/travel-parser-js:latest
+            ghcr.io/bbalkonsky/travel-parser-js:travel-parser-js-${{ github.sha }}
+            ghcr.io/bbalkonsky/travel-parser-js:travel-parser-js-latest
 
   deploy:
     runs-on: ubuntu-latest
