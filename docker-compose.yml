@@ -1,5 +1,8 @@
 version: "3"
 
+volumes:
+  travel_db:
+
 services:
   travel-web:
     container_name: travel-web
@@ -20,3 +23,5 @@ services:
     restart: unless-stopped
     ports:
       - 3000
+    volumes:
+      - travel_db:/:/src/database/
