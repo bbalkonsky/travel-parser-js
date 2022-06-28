@@ -1,7 +1,17 @@
 version: "3"
 
 services:
+  travel-web:
+    container_name: travel-web
+    build:
+      context: ./web
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - 80:80
+
   travel-parser-js:
+    container_name: travel-parser-js
     build:
       context: .
       dockerfile: Dockerfile
