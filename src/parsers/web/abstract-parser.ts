@@ -8,7 +8,7 @@ import UserAgent from '../../services/user-agent';
 import { flatBlock, getBlocksByAttr, getFirstBlockByTagAndAttr } from '../../utils/parser-helpers';
 import ParserModel from '../../models/parser-model';
 
-export default abstract class AbstractParser implements ParserModel{
+export default abstract class AbstractParser implements ParserModel {
 
     protected abstract readonly serviceName: string;
     protected abstract readonly siteUrl: string;

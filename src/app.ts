@@ -55,8 +55,8 @@ const parserCallback = async () => {
 }
 
 const sendPosts = async (post: ParsedPostModel, users: User[]): Promise<void> => {
-    // const usersToSendMessage: number[] = [parseInt(process.env.OWNER_ID, 10)];
-    const usersToSendMessage: number[] = [parseInt(process.env.MAIN_CHANNEL, 10)];
+    const usersToSendMessage: number[] = [parseInt(process.env.OWNER_ID, 10)];
+    // const usersToSendMessage: number[] = [parseInt(process.env.MAIN_CHANNEL, 10)];
     const preparedPost = createPostMessage(post);
 
     for (const user of users) {
@@ -131,3 +131,4 @@ function sliceIntoChunks(arr, chunkSize) {
     }
     return res;
 }
+
