@@ -95,7 +95,7 @@ const preparePostToChannel = (post: PreparedPostModel): string => {
 
 
 
-const keyboard = Markup.keyboard([Markup.button.webApp('Выбор городов', process.env.WEB_APP_LINK)]);
+const keyboard = Markup.keyboard([Markup.button.webApp('Выбор городов', process.env.WEB_APP_LINK)]).resize();
 
 bot.command('start', async (ctx) => {
     await DataBaseController.createChat(ctx.chat.id);
