@@ -110,7 +110,12 @@ bot.on('web_app_data', async (ctx) => {
 bot.command('stat', async (ctx) => {
     if (ctx.from.id.toString() === process.env.OWNER_ID) {
         const users = await DataBaseController.getAllUsers();
-        ctx.reply(users.reduce((prev, curr) => `${prev}\n${curr.id}: ${curr.cities.length}`, `Itogo: ${users.length}\n`));
+        try {
+            await ctx.reply(users.reduce((prev, curr) => `${prev}\n${curr.id}: ${JSON.parse(curr.cities).length}`, `Itogo: ${users.length}\n`));
+        } catch (e) {
+            console.log('users: ', users);
+            console.log(e);
+        }
     } else {
         ctx.reply('Привет ты че шынгыс');
     }
