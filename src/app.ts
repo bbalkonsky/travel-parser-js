@@ -111,7 +111,10 @@ bot.command('stat', async (ctx) => {
     if (ctx.from.id.toString() === process.env.OWNER_ID) {
         const users = await DataBaseController.getAllUsers();
         try {
-            await ctx.reply(users.reduce((prev, curr) => `${prev}\n${curr.id}: ${JSON.parse(curr.cities).length}`, `Itogo: ${users.length}\n`));
+            await ctx.reply(users.reduce((prev, curr) => {
+                const userCities = JSON.parse(curr.cities);
+                return userCities ? `${prev}\n${curr.id}: ${userCities.length}` : prev;
+            }, `Itogo: ${users.length}\n`));
         } catch (e) {
             console.log('users: ', users);
             console.log(e);
