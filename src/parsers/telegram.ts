@@ -43,9 +43,10 @@ export default class TelegramParser implements ParserModel {
     protected findPostLink(post: Element): string {
         const postChildren = flatBlock(post.children)
         for (const child of postChildren) {
-            if (child.type === 'tag' && child.name === 'a' && child.attribs?.class?.split(' ').includes('tgme_widget_message_date')) {
-                return child.attribs.href;
-            }
+            if (child.type === 'tag' && child.name === 'a' && child.attribs?.class?.split(' ')
+                .includes('tgme_widget_message_date')) {
+                    return child.attribs.href;
+                }
         }
     }
 
@@ -58,44 +59,47 @@ export default class TelegramParser implements ParserModel {
 
         let image = '';
         for (const child of postChildren) {
-            if (child.type === 'tag' && child.name === 'a' && child.attribs?.class?.split(' ').includes('tgme_widget_message_photo_wrap')) {
-                const parsedUrl = /(?<=\(').+(?='\))/gm.exec(child.attribs.style);
-                if (parsedUrl) {
-                    image = parsedUrl[0];
+            if (child.type === 'tag' && child.name === 'a' && child.attribs?.class?.split(' ')
+                .includes('tgme_widget_message_photo_wrap')) {
+                    const parsedUrl = /(?<=\(').+(?='\))/gm.exec(child.attribs.style);
+                    if (parsedUrl) {
+                        image = parsedUrl[0];
+                    }
+                    break;
                 }
-                break;
-            }
         }
 
         let title;
         for (const child of postChildren) {
-            if (child.type === 'tag' && child.name === 'div' && child.attribs?.class?.split(' ').includes('tgme_widget_message_text')) {
-                title = child.children.reduce((prev, curr) => {
-                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                    // @ts-ignore
-                    switch (curr.name) {
-                        case 'br':
-                            return `${prev}\n`;
-                        case 'b':
-                            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                            // @ts-ignore
-                            return `${prev}<b>${curr.children[0].data}</b>`;
-                        case 'i':
-                            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                            // @ts-ignore
-                            return `${prev}${curr.children[0].children[0].data}`;
-                        case 'a':
-                            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                            // @ts-ignore
-                            return `${prev}<a href='${curr.attribs.href}'>${curr.children[0]?.data ?? curr.attribs.href}</a>`;
-                        default:
-                            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                            // @ts-ignore
-                            return `${prev}${curr.data}`;
-                    }
-                }, '');
-                break;
-            }
+            if (child.type === 'tag' && child.name === 'div' && child.attribs?.class?.split(' ')
+                .includes('tgme_widget_message_text')) {
+                    title = child.children.reduce((prev, curr) => {
+                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                        // @ts-ignore
+                        switch (curr.name) {
+                            case 'br':
+                                return `${prev}\n`;
+                            case 'b':
+                                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                                // @ts-ignore
+                                return `${prev}<b>${curr.children[0].data}</b>`;
+                            case 'i':
+                                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                                // @ts-ignore
+                                return `${prev}${curr.children[0].children[0].data}`;
+                            case 'a':
+                                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                                // @ts-ignore
+                                // eslint-disable-next-line max-len
+                                return `${prev}<a href='${curr.attribs.href}'>${curr.children[0]?.data ?? curr.attribs.href}</a>`;
+                            default:
+                                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                                // @ts-ignore
+                                return `${prev}${curr.data}`;
+                        }
+                    }, '');
+                    break;
+                }
         }
 
         return {
