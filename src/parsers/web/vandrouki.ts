@@ -1,7 +1,7 @@
 import ParseMetaModel from '../../models/parse-meta-model';
 import AbstractParser from './abstract-parser';
 
-export default class Vandrouki extends AbstractParser{
+export default class Vandrouki extends AbstractParser {
 
     protected readonly serviceName = 'Vandrouki';
 
