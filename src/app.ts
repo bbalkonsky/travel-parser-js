@@ -95,7 +95,7 @@ const preparePostToChannel = (post: PreparedPostModel): string => {
 
 
 
-const keyboard = Markup.keyboard([Markup.button.webApp('Выбор городов', process.env.WEB_APP_LINK)]);
+const keyboard = Markup.keyboard([Markup.button.webApp('Выбор городов', process.env.WEB_APP_LINK)]).resize();
 
 bot.command('start', async (ctx) => {
     await DataBaseController.createChat(ctx.chat.id);
@@ -110,7 +110,15 @@ bot.on('web_app_data', async (ctx) => {
 bot.command('stat', async (ctx) => {
     if (ctx.from.id.toString() === process.env.OWNER_ID) {
         const users = await DataBaseController.getAllUsers();
-        ctx.reply(users.reduce((prev, curr) => `${prev}\n${curr.id}: ${curr.cities.length}`, `Itogo: ${users.length}\n`));
+        try {
+            await ctx.reply(users.reduce((prev, curr) => {
+                const userCities = JSON.parse(curr.cities);
+                return userCities ? `${prev}\n${curr.id}: ${userCities.length}` : prev;
+            }, `Itogo: ${users.length}\n`));
+        } catch (e) {
+            console.log('users: ', users);
+            console.log(e);
+        }
     } else {
         ctx.reply('Привет ты че шынгыс');
     }
