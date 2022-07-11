@@ -17,9 +17,9 @@ const belkaParser = new Travelbelka();
 const telegramParser = new TelegramParser();
 
 export const getParsers = (): ParserModel[] => [
-    // vandroukiParser,
-    // piratesParser,
-    // belkaParser
+    vandroukiParser,
+    piratesParser,
+    belkaParser,
     // travelRadar,
     // tripParser,
     telegramParser

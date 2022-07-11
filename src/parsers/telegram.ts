@@ -5,13 +5,12 @@ import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 import ParseMetaModel from '../models/parse-meta-model';
 import { Element } from 'domhandler';
 import * as parser from 'htmlparser2';
-import { flatBlock, getBlocksByAttr, getFirstBlockByTagAndAttr } from '../utils/parser-helpers';
-import * as domutils from 'domutils';
+import { flatBlock, getBlocksByAttr } from '../utils/parser-helpers';
 
 export default class TelegramParser implements ParserModel {
 
-    protected readonly serviceName = 'Telegram';
-    protected readonly siteUrl: string = 'https://t.me/s/lentachold';
+    protected readonly serviceName = 'TG: TicketsTurkey';
+    protected readonly siteUrl: string = 'https://t.me/s/TicketsTurkey';
     protected options: AxiosRequestConfig = {
         headers: {
             'User-Agent': undefined
@@ -54,25 +53,7 @@ export default class TelegramParser implements ParserModel {
         return this.posts.findIndex(post => this.findPostLink(post) === this.lastPost);
     }
 
-    protected parsePostContent(data: string, contentMeta: ParseMetaModel, headerMeta: ParseMetaModel): ParsedPostModel {
-        const dom = parser.parseDocument(data);
-        const pageDivs: Element[] = flatBlock(dom.children);
-        const contentBlocks = getBlocksByAttr(pageDivs, contentMeta.tagName, contentMeta.attrName);
-
-        const title = domutils.getText(getBlocksByAttr(pageDivs, headerMeta.tagName, headerMeta.attrName));
-        const content = domutils.getText(contentBlocks);
-        const image = this.getPostIcon(pageDivs);
-
-        return {
-            title,
-            content,
-            url: '',
-            image,
-            serviceName: this.serviceName
-        };
-    }
-
-    protected parsePostContent2(post): ParsedPostModel {
+    protected parsePostContent(post): ParsedPostModel {
         const postChildren = flatBlock(post.children);
 
         let image = '';
@@ -92,7 +73,26 @@ export default class TelegramParser implements ParserModel {
                 title = child.children.reduce((prev, curr) => {
                     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                     // @ts-ignore
-                    return curr.type === 'text' ? `${prev}\n${curr.data}` : prev;
+                    switch (curr.name) {
+                        case 'br':
+                            return `${prev}\n`;
+                        case 'b':
+                            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                            // @ts-ignore
+                            return `${prev}<b>${curr.children[0].data}</b>`;
+                        case 'i':
+                            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                            // @ts-ignore
+                            return `${prev}${curr.children[0].children[0].data}`;
+                        case 'a':
+                            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                            // @ts-ignore
+                            return `${prev}<a href='${curr.attribs.href}'>${curr.children[0]?.data ?? curr.attribs.href}</a>`;
+                        default:
+                            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                            // @ts-ignore
+                            return `${prev}${curr.data}`;
+                    }
                 }, '');
                 break;
             }
@@ -105,36 +105,6 @@ export default class TelegramParser implements ParserModel {
             image,
             serviceName: this.serviceName
         };
-    }
-
-    protected getPostIcon(pageDivs: Element[]): string {
-        const iconBlock = getFirstBlockByTagAndAttr(
-            pageDivs,
-            this.postIconParseMeta.tagName,
-            this.postIconParseMeta.attrName
-        );
-
-        console.log(iconBlock)
-        return iconBlock?.attribs?.src ?? '';
-    }
-
-    protected async getPostsContent(posts: string[]): Promise<ParsedPostModel[]> {
-        const postsContent = [];
-        for (const postUrl of posts) {
-            // try {
-            //     const postContent = await this.sendRequest(postUrl);
-            //     const parsedContent = this.parsePostContent(
-            //         postContent.data,
-            //         this.postContentParseMeta,
-            //         this.postHeaderParseMeta
-            //     );
-            //     parsedContent.url = postUrl;
-            //     postsContent.push(parsedContent);
-            // } catch (e) {
-            //     console.log(`Error while getting post content (${postUrl}): ${e}`);
-            // }
-        }
-        return postsContent;
     }
 
     public async getNewPosts(): Promise<ParsedPostModel[]> {
@@ -152,7 +122,7 @@ export default class TelegramParser implements ParserModel {
                 if (newPosts.length) {
                     const newPostsContent = [];
                     newPosts.forEach(post => {
-                        newPostsContent.push(this.parsePostContent2(post));
+                        newPostsContent.push(this.parsePostContent(post));
                     });
                     this.lastPost = this.findPostLink(newPosts[0]);
                     return newPostsContent;

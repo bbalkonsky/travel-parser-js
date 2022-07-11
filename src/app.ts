@@ -55,8 +55,8 @@ const parserCallback = async () => {
 }
 
 const sendPosts = async (post: ParsedPostModel, users: User[]): Promise<void> => {
-    const usersToSendMessage: number[] = [parseInt(process.env.OWNER_ID, 10)];
-    // const usersToSendMessage: number[] = [parseInt(process.env.MAIN_CHANNEL, 10)];
+    // const usersToSendMessage: number[] = [parseInt(process.env.OWNER_ID, 10)];
+    const usersToSendMessage: number[] = [parseInt(process.env.MAIN_CHANNEL, 10)];
     const preparedPost = createPostMessage(post);
 
     for (const user of users) {
@@ -73,7 +73,7 @@ const sendPosts = async (post: ParsedPostModel, users: User[]): Promise<void> =>
         postsToSend.push(async () => bot.telegram.sendPhoto(
             id,
             { url: img }, // TODO if there is no image
-            { caption: preparePostToChannel(preparedPost), reply_markup:
+            { caption: preparePostToChannel(preparedPost), parse_mode: 'HTML', reply_markup:
                     {
                         inline_keyboard: [[
                             Markup.button.url(`${post.serviceName} 🔥`, post.url)
