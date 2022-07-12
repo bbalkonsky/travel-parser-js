@@ -10,6 +10,7 @@ import { User } from './database/entities/User';
 import DataBaseController from './database/controller';
 import ParsedPostModel from './models/parsed-post-model';
 import PreparedPostModel from './models/prepared-post-model';
+import { ExtraReplyMessage } from 'telegraf/typings/telegram-types';
 
 dotenv.config()
 
@@ -68,19 +69,21 @@ const sendPosts = async (post: ParsedPostModel, users: User[]): Promise<void> =>
 
     const postsToSend = [];
     for (const id of usersToSendMessage) {
-        // TODO you are kidding right?
-        const img = post.image ? post.image : 'https://static.timesofisrael.com/atlantajewishtimes/uploads/2021/03/141_20201013185512_Consumer-Survey-Finds-70-Percent-of-Travelers-Plan-to-Holiday-in-2021.jpg';
-        postsToSend.push(async () => bot.telegram.sendPhoto(
-            id,
-            { url: img }, // TODO if there is no image
-            { caption: preparePostToChannel(preparedPost), parse_mode: 'HTML', reply_markup:
-                    {
-                        inline_keyboard: [[
-                            Markup.button.url(`${post.serviceName} 🔥`, post.url)
-                        ]]
-                    }
+        const extra: ExtraReplyMessage = {
+            parse_mode: 'HTML',
+            reply_markup: {
+                inline_keyboard: [[
+                    Markup.button.url(`${post.serviceName} 🔥`, post.url)
+                ]]
             }
-        ).catch(() => console.log(`Post error: ${post.url}`)));
+        }
+        postsToSend.push(post.image
+            ? async () => bot.telegram.sendPhoto(id, { url: post.image }, {
+                    ...extra,
+                    caption: preparePostToChannel(preparedPost)
+                }).catch(() => console.log(`Post error: ${post.url}`))
+            : async () => bot.telegram.sendMessage(id, preparePostToChannel(preparedPost), extra)
+        );
     }
     for (const chunk of sliceIntoChunks(postsToSend, 25)) {
         await Promise.allSettled(chunk.map(x => x())).catch(err => console.log(err));
