@@ -7,10 +7,10 @@ import { Element } from 'domhandler';
 import * as parser from 'htmlparser2';
 import { flatBlock, getBlocksByAttr } from '../utils/parser-helpers';
 
-export default class TelegramParser implements ParserModel {
+export default class TelegramParser2 implements ParserModel {
 
-    protected readonly serviceName = 'Telegram: TicketsTurkey';
-    protected readonly siteUrl: string = 'https://t.me/s/TicketsTurkey';
+    protected readonly serviceName = 'Telegram: Lucky Wings Russia';
+    protected readonly siteUrl: string = 'https://t.me/s/luckywingsrussia';
     protected options: AxiosRequestConfig = {
         headers: {
             'User-Agent': undefined

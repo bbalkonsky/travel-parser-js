@@ -5,6 +5,7 @@ import ParserModel from '../models/parser-model';
 import Travelbelka from './web/travelbelka';
 import Travelradar from './web/travelradar';
 import TelegramParser from './telegram';
+import TelegramParser2 from './telegram2';
 
 const vandroukiParser = new Vandrouki();
 const piratesParser = new Pirates();
@@ -15,6 +16,7 @@ const belkaParser = new Travelbelka();
 // TODO turn on after war
 // const tripParser = new Trip4you();
 const telegramParser = new TelegramParser();
+const telegramParser2 = new TelegramParser2();
 
 export const getParsers = (): ParserModel[] => [
     vandroukiParser,
@@ -22,5 +24,6 @@ export const getParsers = (): ParserModel[] => [
     belkaParser,
     // travelRadar,
     // tripParser,
-    telegramParser
+    telegramParser,
+    telegramParser2
 ];
