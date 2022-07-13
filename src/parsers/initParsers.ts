@@ -4,8 +4,7 @@ import Trip4you from './web/trip4you';
 import ParserModel from '../models/parser-model';
 import Travelbelka from './web/travelbelka';
 import Travelradar from './web/travelradar';
-import TelegramParser from './telegram';
-import TelegramParser2 from './telegram2';
+import TelegramParser from './telegram/telegram';
 
 const vandroukiParser = new Vandrouki();
 const piratesParser = new Pirates();
@@ -15,8 +14,10 @@ const belkaParser = new Travelbelka();
 // const travelRadar = new Travelradar();
 // TODO turn on after war
 // const tripParser = new Trip4you();
-const telegramParser = new TelegramParser();
-const telegramParser2 = new TelegramParser2();
+
+// telegram parsers
+const ticketsTurkey = new TelegramParser('Telegram: TicketsTurkey', 'https://t.me/s/TicketsTurkey');
+const luckyWingsRussia = new TelegramParser('Telegram: Lucky Wings Russia', 'https://t.me/s/luckywingsrussia');
 
 export const getParsers = (): ParserModel[] => [
     vandroukiParser,
@@ -24,6 +25,6 @@ export const getParsers = (): ParserModel[] => [
     belkaParser,
     // travelRadar,
     // tripParser,
-    telegramParser,
-    telegramParser2
+    ticketsTurkey,
+    luckyWingsRussia
 ];

@@ -1,16 +1,14 @@
-import ParserModel from '../models/parser-model';
-import ParsedPostModel from '../models/parsed-post-model';
-import UserAgent from '../services/user-agent';
+import ParserModel from '../../models/parser-model';
+import ParsedPostModel from '../../models/parsed-post-model';
+import UserAgent from '../../services/user-agent';
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
-import ParseMetaModel from '../models/parse-meta-model';
+import ParseMetaModel from '../../models/parse-meta-model';
 import { Element } from 'domhandler';
 import * as parser from 'htmlparser2';
-import { flatBlock, getBlocksByAttr } from '../utils/parser-helpers';
+import { flatBlock, getBlocksByAttr } from '../../utils/parser-helpers';
 
-export default class TelegramParser2 implements ParserModel {
+export default class TelegramParser implements ParserModel {
 
-    protected readonly serviceName = 'Telegram: Lucky Wings Russia';
-    protected readonly siteUrl: string = 'https://t.me/s/luckywingsrussia';
     protected options: AxiosRequestConfig = {
         headers: {
             'User-Agent': undefined
@@ -29,6 +27,11 @@ export default class TelegramParser2 implements ParserModel {
 
     protected lastPost = '';
     protected posts: Element[] = [];
+
+    constructor(
+        private readonly serviceName: string,
+        private readonly siteUrl: string
+    ) {}
 
     protected async sendRequest(url: string): Promise<AxiosResponse> {
         return await axios.get(url, this.options);
